@@ -1,0 +1,12 @@
+.form{
+    max-width: 500px;
+    margin: 50px auto;
+}
+.form textarea{
+   height:50px !important;
+   
+}
+ 
+.companyform{
+display: inline;
+}
