@@ -1,3 +1,10 @@
+body{
+    background-color: black;
+}
+header h3{
+    color: #EEEBDD;
+    margin-top: 15px;
+}
 .form{
     max-width: 500px;
     margin: 50px auto;
@@ -6,7 +13,55 @@
    height:50px !important;
    
 }
- 
 .companyform{
 display: inline;
 }
+.bord button{
+    background-color:#EEEBDD;
+    margin-top: 20px;
+    border-radius: 5px;
+    padding: 5px;
+
+}
+.show{
+    background-color: #EEEBDD;
+    border-radius: 5px;
+    color: black;
+}
+.edit{
+    background-color:#D8B6A4;
+    border-radius: 5px;
+    color: black;
+
+}
+.delete{
+    background-color:#630000;
+    border-radius: 5px;
+    color: black;
+
+}
+.create{
+    float: right;
+}
+.container{
+    margin-top:70px;
+}
+ .bord ul{
+     padding-left:5px;
+ }
+.bord a{
+    color: black;
+    font-weight: bold;
+    padding-top: 5%;
+    
+
+}
+table{
+    color:#EEEBDD;
+
+}
+
+ table th {
+    color:white;
+
+ }

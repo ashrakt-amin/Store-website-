@@ -1,5 +1,14 @@
 @extends('categories.layout')
 @section('content')
+@if($errors->any())
+<div class="alert alert-danger">
+<ul>
+@foreach($errors->all() as $error)
+  <li>{{$error}}</li>
+</ul>
+@endforeach
+</div>
+@endif
 
 <form class="form " action="{{route('categories.store') }}" method="POST">
 @csrf
@@ -13,25 +22,34 @@
     <label for="name" class="col-sm-2 col-form-label">Name</label>
 
     <div class="form-group">
-      <input type="text" name="name" class="form-control" id="name">
-    </div>
-
-
-    <label for="des" class="col-sm-2 col-form-label">Description</label>
-    <div  class="form-group ">
-      <textarea class="form-control" name="description" id="des"></textarea>
+      <input type="text" value="{{old('name')}}" name="name" class="form-control" id="name">
+      @error('name')
+      <p class="text-danger">{{$message}}</p>
+      @enderror
     </div>
 
     <label for="product" class="col-sm-2 col-form-label">Product</label>
     <div  class="form-group ">
-      <select class="form-control" name="parent_id" id="product">
-          <option value="">no parent</option>
+      <select class="form-control" value="{{old('parent_id')}}" name="parent_id" id="product">
+          <option value=" ">no parent</option>
           @foreach($categories as $category)
           <option value="{{$category->id}}">{{$category->name}}</option>
           @endforeach
-
-      </select>
+     </select>
+      @error('parent_id')
+      <p class="text-danger">{{$message}}</p>
+      @enderror
     </div>
+
+    <label for="des" class="col-sm-2 col-form-label">Description</label>
+    <div  class="form-group ">
+      <textarea class="form-control" value="{{old('description')}}" name="description" id="des"></textarea>
+      @error('description')
+      <p class="text-danger">{{$message}}</p>
+      @enderror
+    </div>
+
+    
 
   <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                 <button type="submit" class="btn btn-primary ">Submit</button>

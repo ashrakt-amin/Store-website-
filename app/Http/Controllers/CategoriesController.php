@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Rules\parentRule ;
+
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -25,9 +27,14 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create( Category $categories)
+    public function create( Category $categories ,$id =null)
     {
-        $categories= Category::all();
+        $categories= Category::where('id' ,'<>', $id)
+        ->where(function($query)use($id){
+        $query-> where('parent_id','<>',$id)
+        ->orWhereNull('parent_id');
+        })->get();
+
         return view('categories.create',compact('categories')) ;
 
     }
@@ -42,15 +49,16 @@ class CategoriesController extends Controller
     {
 
         $request->validate([
-         'name'=>'required',
-         'description' =>'required',
-         'parent_id' =>'sometimes',
+            'name'=>['required','max:255','min:3','unique:categories,name'],
+            'description' =>'nullable|max:1000',
+            'parent_id' =>'nullable|exists:categories,id',
+   
 
        ]);
 
-       Category::create($request->all());
+       $category=Category::create($request->all());
 
-        return redirect()->route('categories.index')->with('success','copmpany created successfully.');
+        return redirect()->route('categories.index')->with('success'," category $category->name was created successfully .");
 
     }
 
@@ -75,7 +83,12 @@ class CategoriesController extends Controller
     {
         
         $categories = Category::findOrFail($id);
-        $category= Category::all();
+
+        $category= Category::where('id' ,'<>', $id)
+           ->where(function($query)use($id){
+           $query-> where('parent_id','<>',$id)
+           ->orWhereNull('parent_id');
+           })->get();
 
         return view('categories.edit',compact('categories','category')) ;
 
@@ -88,18 +101,21 @@ class CategoriesController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Category $category ,$id = null)
     {
         
         $request->validate([
-            'name'=>'required',
-            'description' =>'required',
-            'parent_id' =>'sometimes',
+            'name'=>['required','max:255','min:3',"unique:categories,name,$id "],
+            'description' =>['nullable','max:1000'],
+            'parent_id' =>['nullable','exists:categories,id',new parentRule($id)
+             
+            ]
    
           ]);
+          
 
         $category->update($request->all());
-        return redirect()->route('categories.index')->with('success','copmpany created successfully.');
+        return redirect()->route('categories.index')->with('success'," category $category->name was created successfully ." );
 
 
 
@@ -115,6 +131,6 @@ class CategoriesController extends Controller
     {
         $category = Category::findOrFail($id);
         $category->delete($id);
-        return redirect()->route('categories.index')->with('success','Post deleted successfully');
+        return redirect()->route('categories.index')->with('success'," category $category->name was deleted successfully .");
     }
 }
