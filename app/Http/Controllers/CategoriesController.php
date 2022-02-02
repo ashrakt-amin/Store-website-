@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Rules\parentRule ;
-
 use App\Models\Category;
+
+use App\Rules\parentRule ;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoriesController extends Controller
 {
@@ -14,12 +15,35 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(){
+     // $this->middleware('auth')->except('index');
+    }
+    
+
     public function index()
     {
-        $categories = Category::all();
-        $ccategory = Category::all();
+        $categories = Category::leftJoin('categories as parents','parents.id','=','categories.parent_id')
+        ->leftJoin('products','products.category_id','=','categories.id')
+        ->select([
+            'categories.name',
+            'categories.id',
+            'categories.parent_id',
+            'categories.created_at',
+            'categories.updated_at',
+            'parents.name as parent',
+            DB::raw('count(products.id) as products_num')])
+        ->groupBy([ 'categories.name',
+        'categories.id',
+        'categories.parent_id',
+        'categories.created_at',
+        'categories.updated_at',
+        'parent'])
+        ->orderBy('products_num','DESC')
+        ->orderBy('categories.name','DESC')
+        ->paginate();
+        
 
-        return view('categories.index',compact('categories','ccategory')) ;
+        return view('categories.index',compact('categories')) ;
     }
 
     /**
@@ -101,13 +125,13 @@ class CategoriesController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category ,$id = null)
+    public function update(Request $request,Category $category)
     {
         
         $request->validate([
-            'name'=>['required','max:255','min:3',"unique:categories,name,$id "],
+            'name'=>['required','max:255','min:3',"unique:categories,name,$category->id"],
             'description' =>['nullable','max:1000'],
-            'parent_id' =>['nullable','exists:categories,id',new parentRule($id)
+            'parent_id' =>['nullable','exists:categories,id',new parentRule($category->id)
              
             ]
    

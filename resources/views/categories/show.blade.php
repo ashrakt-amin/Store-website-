@@ -3,34 +3,33 @@
 
 <div class="row">
         <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2> Show Category</h2>
-            </div>
             <div class="pull-right">
                 <a class="btn btn-primary" href="{{ route('categories.index') }}"> Back</a>
             </div>
         </div>
     </div>
+    <div class=" bb">
+
    
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
+<div class="row mx-auto">
+    <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
-                <strong>Name:</strong>
+                <strong>Name : </strong>
                 {{$category->name }}
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
-                <strong>Description:</strong>
+                <strong>Description : </strong>
                 {{ $category->description}}
             </div>
         </div>
 
 
-        <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
-                <strong>Parent:</strong>
+                <strong>Parent : </strong>
                 <?php if (($category->parent_id) == ""){
                        echo "null" ;
                      } 
@@ -42,18 +41,20 @@
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
-                <strong>created at:</strong>
+                <strong>created at : </strong>
                 {{ $category->created_at}}
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
-                <strong>updated at:</strong>
+                <strong>updated at : </strong>
                 {{ $category->updated_at }}
             </div>
         </div>
     </div>
+    </div>
+
 @endsection

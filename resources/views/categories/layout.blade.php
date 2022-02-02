@@ -12,21 +12,32 @@
 </head>
 
 <body>
-<header>
-   <div ><h3 class="text-center ">{{config('app.name')}}</h3></div>
+   
+<header class="d-flex">
+   <div ><h3 >{{config('app.name')}}</h3></div>
+   <div class="ml-auto">
+      <a href="{{route('profile.show')}}">{{Auth::user()->name}}</a>
+      <a href="#" onclick="document.getElementById('logout').submit()">Logout</a>
+      <form id="logout" class="d-none" action="{{route('logout')}}" method="POST">
+         @csrf
+      <button type="submit"></button>
+      </form>
+
+   </div>
+
 </header>
-<div class="container">
-<div class="row">
+<div class="container ">
+<div class="row ">
 
 <div class="col-md-2 bord ">
 <nav class="nav flex-column">
       <button> <a href="{{route('categories.index')}}" class="nav_link active">categories</a></button>
-      <button><a href="{{route('categories.index')}}" class="nav_link active">Products</a></button>
-      <button><a href="{{route('categories.index')}}" class="nav_link active">Orders</a></button>
+      <button><a href="{{route('products.index')}}" class="nav_link active">Products</a></button>
+      <button><a href="{{route('products.index')}}" class="nav_link active">Orders</a></button>
       </nav>
 </div>
 
-<div class="col-md-10 ">
+<div class="col-md-10">
   @yield('content')
 </div>
 

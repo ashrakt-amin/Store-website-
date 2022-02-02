@@ -9,4 +9,9 @@ class Product extends Model
 {
     use HasFactory;
     protected $fillable =['name','description','category_id','image','price','quantity','user_id'];
+ 
+
+    public function getImageUrlAttribute(){
+        return ($this->image !== null) ? asset('storage/'.$this->image) : asset('storage/default/default.png');
+    }
 }

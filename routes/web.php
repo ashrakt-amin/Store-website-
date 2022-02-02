@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +17,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/categories','CategoriesController@index');
-Route::resource('/categories',CategoriesController::class);
 
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    (['auth:sanctum', 'verified']);
+    return view('dashboard');
+})->name('dashboard');
 
-
+Route::group([
+    'middleware'=>['auth','verified'],
+],function(){
+Route::prefix('/')->middleware('auth')->group(function(){
+    Route::resource('categories',CategoriesController::class);
+    Route::resource('products',productsController::class);
+    
+});
+});

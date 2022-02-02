@@ -1,13 +1,29 @@
 body{
     background-color: black;
+    padding-bottom: 3%;
 }
-header h3{
+header h3 ,p{
     color: #EEEBDD;
-    margin-top: 15px;
+    margin: 15px;
+    
 }
+
 .form{
     max-width: 500px;
-    margin: 50px auto;
+}
+.bb{
+    box-shadow: 10px 10px 5px 12px #EEEBDD;
+    max-width:700px;
+padding-top:7% ;
+padding-bottom:7%;
+margin-left: 5%;
+
+}
+.bb strong + .bb label{
+    color: #EEEBDD;
+}
+.bb {
+    color:#D8B6A4;
 }
 .form textarea{
    height:50px !important;
