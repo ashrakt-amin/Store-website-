@@ -15,27 +15,27 @@
     <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
                 <strong>Name : </strong>
-                {{$category->name }}
+                {{$categories->name }}
             </div>
         </div>
 
         <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
                 <strong>Description : </strong>
-                {{ $category->description}}
+                {{ $categories->description}}
             </div>
         </div>
 
-
+        
         <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
                 <strong>Parent : </strong>
-                <?php if (($category->parent_id) == ""){
+                <?php if (($categories->parent_id) == ""){
                        echo "null" ;
                      } 
                    else {
   
-                     echo $category->parent_id ;
+                     echo $categories->parent_id ;
                         }  
                  ?>  
             </div>
@@ -44,16 +44,45 @@
         <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
                 <strong>created at : </strong>
-                {{ $category->created_at}}
+                {{ $categories->created_at}}
             </div>
         </div>
 
         <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
                 <strong>updated at : </strong>
-                {{ $category->updated_at }}
+                {{ $categories->updated_at }}
             </div>
         </div>
+        
+
+        <div class="col-xs-9 col-sm-9 col-md-9">
+            <div class="form-group">
+                <strong>Products : </strong>
+                <table class="table table-bordered-none mt-3 text-center">
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Image</th>
+
+                    </tr>
+                    <tr>
+                    @foreach($products as $product)
+
+                        <td>{{$product->name}}</td>
+                        <td>{{$product->price}}</td>
+                        <td>{{$product->quantity}}</td>
+                        <td><img style="width:70px; height: 70px;" src="{{$product->image_url}}"></td>
+                        @endforeach
+
+                    </tr>
+                </table>
+              
+            </div>
+        </div>
+
+
     </div>
     </div>
 

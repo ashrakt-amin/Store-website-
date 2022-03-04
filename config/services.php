@@ -30,4 +30,17 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'currency' => [
+        'key' => '3a504595f7f10b652a4e0ade7cd3b9d5',
+    ],
+
+    'paypal'=>[
+        'mode'=> env('sandbox'),
+        'client_id'=> env('ARPPoP2ozOYIE_laSFjXswsw3SkxQCr-fe0UH4OEwHFolMsvVv1Oxe59yTaT4PeN8THxg6rY6UJufLmv'),
+        'secret'=> env('EMg5qnWWM-Uitb56jvCLG8MLPmolvtFo8QyEIrcRm4BSl531AvNHpvMs4UEpTW6BUTCLjrOjWqQmvWlN'),
+    ],
+    'moyasar'=>[
+        'key' =>'pk_test_1Ss5SASTBHqqPsy5ZSKR54MreeXSRFtuX8h9XNRi',
+        'secret'=>'sk_test_N7xjqjDdaN1xj9GjqeTKeXmjpAukBUgV89v2tKZz'
+    ]
 ];

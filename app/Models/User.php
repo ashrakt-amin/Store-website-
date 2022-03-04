@@ -15,7 +15,7 @@ use Illuminate\Auth\Events\Registered;
 class User extends Authenticatable implements MustVerifyEmail
 {
 
-    use HasApiTokens;
+    use HasApiTokens;//trate 
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
@@ -30,7 +30,33 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'phone',
+        'type',
+        'user_name',
     ];
+
+    public function profile(){
+        return $this->hasOne(Profile::class,'user_id','id')->withDefault();
+    }
+
+    public function products(){
+        return $this->hasMany(Product::class,'user_id','id')->withDefault();
+    }
+
+    public function cart(){
+        return $this->hasMany(Cart::class,'user_id','id')->withDefault();
+    }
+    
+    public function orders(){
+        return $this->hasMany(Order::class,'user_id','id')->withDefault();
+    }
+
+    public function role(){
+        return $this->belongsTo(Role::class);
+    }
+    
+    
+
 
     /**
      * The attributes that should be hidden for serialization.

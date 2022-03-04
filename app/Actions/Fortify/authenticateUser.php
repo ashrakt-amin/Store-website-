@@ -14,7 +14,7 @@ class authenticateUser
     public static function authenticate(Request $request)
     {
         $request->validate([
-            config('fortify.username')=>'required',
+            config('fortify.user_name')=>'required',
             'password'=>'required',
         ]);
 
@@ -29,7 +29,7 @@ class authenticateUser
         $username =$request->post('username');
         $password =$request->post('password');
 
-        $user =User::where('username',$username)
+        $user =User::where('user_name',$username)
         ->orWhere('email',$username)
         ->orWhere('phone',$username)->first();
 

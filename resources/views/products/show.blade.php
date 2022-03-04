@@ -20,6 +20,16 @@
             </div>
         </div>
 
+        <div class="row mx-auto">
+        <div class="col-xs-9 col-sm-9 col-md-9">
+            <div class="form-group">
+                <strong>tags : </strong>
+                @foreach ($product->tags  as $tag)
+                <strong>{{$tag->name}}</strong>
+                @endforeach
+            </div>
+        </div>
+
         <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
                 <strong>Description : </strong>
@@ -31,7 +41,7 @@
         <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
                 <strong>Category : </strong>
-                {{$product->name}}
+                {{$category->name}}
 
             </div>
         </div>

@@ -29,26 +29,25 @@
         <th>Image</th>
         <th>Price</th>
         <th>Quantity</th>
-        <th>User ID</th>
+        <th>User</th>
 
 
-        <th  width="300px">Action</th>
+        <th  width="200px">Action</th>
 
     </tr>
     @forelse ($products as $product)
     <tr>
         <td>{{$loop->index}}</td>
         <td>{{$product->id}}</td>
-        <td>{{$product->name}}</td>
-        <td>{{$product->category}}</td>
+        <td><a href="{{route('products.show',$product->id)}}">{{$product->name}}</td>
+        <td>{{$product->category->name}}</td>
         <td><img style="width:70px; height: 70px;" src="{{$product->image_url}}"></td>
         <td>{{$product->price}}</td>
         <td>{{$product->quantity}}</td>
-        <td>{{$product->user_id}}</td>
+        <td>{{$product->user->name}}</td>
         
 
         <td>
-                    <a class="btn show" href="{{ route('products.show',$product->id) }}">Show</a>    
                     <a class="btn edit" href="{{ route('products.edit',$product->id) }}">Edit</a>  
                     <form action="{{ route('products.destroy',$product->id) }}" class="companyform" method="POST">   
                     @csrf

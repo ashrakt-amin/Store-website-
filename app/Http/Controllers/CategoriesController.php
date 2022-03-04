@@ -6,7 +6,13 @@ use App\Models\Category;
 
 use App\Rules\parentRule ;
 use Illuminate\Http\Request;
+use App\Http\Middleware\UserType;
+use Carbon\Carbon;
+use DateInterval;
+use DateTime;
+use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class CategoriesController extends Controller
 {
@@ -16,13 +22,30 @@ class CategoriesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function __construct(){
-     // $this->middleware('auth')->except('index');
+     // $this->middleware(['auth',UserType::class]);
     }
     
 
     public function index()
     {
-        $categories = Category::leftJoin('categories as parents','parents.id','=','categories.parent_id')
+      
+       /*
+             // Date
+
+       $date = new DateTime();
+        $date->add(new DateInterval('P1D')); // now + day
+        $date->add(new DateInterval('P1M')); // now + month
+        echo $date->format('d/m/Y h:i:s');
+
+        $date = new Carbon(); // larvel
+        $diff =$date->diff(new Carbon('2000-10-10'));
+        echo $diff->y ;
+        $date->addDay(3);
+        echo $date->format('F ,l d , Y h:i:s A');
+        exit();
+        */
+
+        /*$categories = Category::leftJoin('categories as parents','parents.id','=','categories.parent_id')
         ->leftJoin('products','products.category_id','=','categories.id')
         ->select([
             'categories.name',
@@ -40,7 +63,11 @@ class CategoriesController extends Controller
         'parent'])
         ->orderBy('products_num','DESC')
         ->orderBy('categories.name','DESC')
-        ->paginate();
+        ->paginate();*/
+        $categories = Category::with('parent','children')
+        ->withCount('products as products')
+        ->orderBy('products','DESC')->paginate();
+        
         
 
         return view('categories.index',compact('categories')) ;
@@ -92,9 +119,13 @@ class CategoriesController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        return view('categories.show',compact('category'));
+        $categories = Category::findOrFail($id);
+                $products= $categories->products;
+
+        //$products= $categories->products()->get();
+        return view('categories.show',compact('categories','products'));
     }
 
     /**
@@ -105,9 +136,9 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        
+        //Gate::denies is oppsite of allows
+        if(Gate::allows('categories.edit')){
         $categories = Category::findOrFail($id);
-
         $category= Category::where('id' ,'<>', $id)
            ->where(function($query)use($id){
            $query-> where('parent_id','<>',$id)
@@ -115,7 +146,9 @@ class CategoriesController extends Controller
            })->get();
 
         return view('categories.edit',compact('categories','category')) ;
-
+        }else{
+            return abort(403,'you must be super admin');
+        }
     }
 
     /**
@@ -153,8 +186,31 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
+        Gate::authorize('category.destroy');
         $category = Category::findOrFail($id);
         $category->delete($id);
         return redirect()->route('categories.index')->with('success'," category $category->name was deleted successfully .");
     }
+
+
+    public function xml(){
+        $categories =Category::all();
+        $xml ='<?xml version="1.0" ?>';
+        $xml .='<categories>';
+        foreach($categories as $category){
+           $xml .= sprintf('<category id= "%d">',$category->id);
+           $xml .= sprintf('<name> %s </name>',$category->name);
+           $xml .= '</category>';
+        }
+        $xml .='</categories>';
+        return response($xml ,200 ,[
+            "Content-Type" => 'application/xml'
+        ]);
+    }
+
+    public function json(){
+        return Category::all();
+      /*  $category = Category::all();
+        return json_encode($category);*/
+}
 }

@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Tag;
+use App\Models\Cart;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;   
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
@@ -21,8 +24,11 @@ class ProductsController extends Controller
       //  $products =DB::table('products')->pageinate(); 
 
         $request = request();
-        $products = Product::join('categories','categories.id','=','products.category_id')
-        ->select(['products.*','categories.name as category']);
+        /*$products = Product::join('categories','categories.id','=','products.category_id')
+        ->select(['products.*','categories.name as category']);*/
+         //Eager loading
+        $products =Product::with('category','user');
+
         if($request->query('name')){
             $products->where('products.name',"like",$request->query('name'));
         }
@@ -56,7 +62,9 @@ class ProductsController extends Controller
     {
         $users =User::all();
         $categories =Category::all();
-        return view('products.create',compact('categories','users'));
+        $tags =Tag::all();
+        $product_tags=[];
+        return view('products.create',compact('tags','categories','users','product_tags'));
 
     }
 
@@ -66,7 +74,7 @@ class ProductsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request ,Product $product)
     {
         $request->validate([
             "name" =>'required|min:3',
@@ -86,24 +94,54 @@ class ProductsController extends Controller
 
         }
 
-         Product::create($products);
+        $products['user_id']=Auth::id();
+       // $products['user_id']=Auth::user()->id;
+       // $products['user_id']=$request->user()->id;
+
+        $product= Product::create($products);
+        $this->saveTags($product ,$request);
+         /*$tags = $request->post('tag',[]);
+         foreach($tags as $tag){
+             DB::table('product_tag')->insert([
+                 'product_id'=>$product->id,
+                 'tag_id'=>$tag
+             ]);
+         }*/
          //dd($products);
          return redirect()->route('products.index')->with('success','product was created');
 
     }
-
+     
+    public function saveTags(Product $product ,Request $request )
+    {
+        $tag_id=[];
+        $tag=explode(',',$request->post('tag'));
+        foreach($tag as $name){
+          $name=strtoupper(trim($name));
+          $tag = Tag::where('name',$name)->first();
+          if(!$tag){
+              $tag=Tag::create([
+                  'name'=>$name
+              ]);
+          }
+          $tag_id[]=$tag->id;
+      }
+      $product->tags()->sync($tag_id);
+    }
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
+
     public function show($id)
     {
       
        $product = Product::findOrFail($id);
+       $category =$product->category;
        //dd($product,$user ,$category);
-     return view ('products.show',compact('product'));
+     return view ('products.show',compact('product','category'));
     }
 
     /**
@@ -116,8 +154,10 @@ class ProductsController extends Controller
     {
          $users =User::all();
          $categories =Category::all();
+         $tags=Tag::all();
          $products = Product::findOrFail($id);
-         return view ('products.edit',compact('users','categories','products'));
+         $product_tag= strtoupper(implode(',',($products->tags->pluck('name')->toArray())) );
+         return view ('products.edit',compact('tags','users','categories','products','product_tag'));
     }
 
     /**
@@ -153,6 +193,22 @@ class ProductsController extends Controller
         }
 
          $product->update($products);
+        
+         $this->saveTags($product ,$request);
+
+        /* $tags = $request->post('tag',[]);
+         $product->tags($tags);*/
+
+         /*DB::table('product_tag')->where('product_id',$product->id)->delete();
+         foreach($tags as $tag){
+             DB::table('product_tag')->insert([
+                 'product_id'=>$product->id,
+                 'tag_id'=>$tag
+             ]);
+         }*/
+        
+
+
          
      
          return redirect()->route('products.index')->with('success','product was created');

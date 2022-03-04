@@ -1,16 +1,19 @@
 <?php
 
 namespace App\Providers;
+use App\Models\User;
 
+use Illuminate\Http\Request;
+use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Actions\Fortify\CreateNewUser;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\ServiceProvider;
-use Laravel\Fortify\Fortify;
+use App\Actions\Fortify\UpdateUserProfileInformation;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -35,8 +38,39 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
-        Fortify::authenticateUsing([authenticateUser::class,'authenticate']);
+        Fortify::authenticateUsing(function (Request $request)
+        {
+            $request->validate([
+                config('fortify.email')=>'required',
+                'password'=>'required',
+            ]);
+    
+           /* 
+           this in laravel to check and login together
+           Auth::attempt([
+               'username' => $request->post('username'),
+               'password' => $request->post('password')
+            ],true);
+            */
+    
+            $username =$request->post('email');
+            $password =$request->post('password');
+    
+            $user =User::where('user_name',$username)
+            ->orWhere('email',$username)
+            ->orWhere('phone',$username)->first();
+    
+           if($user && Hash::check($password ,$user->password)){
+            Auth::login($user ,true);
 
+            return $user;
+            /* 'true' =>this mean make remmember tpken */
+           }
+    
+           
+        });
+
+       
 
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
