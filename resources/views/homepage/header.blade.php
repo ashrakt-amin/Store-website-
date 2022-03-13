@@ -3,14 +3,22 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}"></link>
     <link rel="stylesheet" href="{{asset('/css/font-awesome.css') }}"></link>
+    <link rel="stylesheet" href="{{ asset('/css/backend.css') }}"></link>
+
     <!-- Moyasar Styles -->
     <link rel="stylesheet" href="https://cdn.moyasar.com/mpf/1.5.4/moyasar.css">
+
+    <link rel="stylesheet" media="all" href="https://cdn.shopify.com/shopifycloud/brochure/assets/application-15065a20bcc439ed82721b3579f52386963fffcf5dc3a07b645272d0f9832fef.css" />
+    <link rel="stylesheet" media="screen" href="https://cdn.shopify.com/shopifycloud/brochure/assets/manifests/about-acf30d40008e759a13f0a6665b0687e6380f781bc68bc1299be8d56bd43161a0.css" />    <meta property="fb:app_id" content="847460188612391">
+
+
 </head>
+
+
+
 
 <body>
 <!--<header class="d-flex">
@@ -27,32 +35,15 @@
 
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg" style="background-color:#000000">
+<nav class="navbar navbar-expand-lg" style="background-color:#000000 ;height:70px">
   <!-- Container wrapper -->
   <div class="container-fluid">
-
-
-
-
-    <!-- Toggle button -->
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-mdb-toggle="collapse"
-      data-mdb-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <i class="fas fa-bars"></i>
-    </button>
-       
     
     <!-- Collapsible wrapper -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Navbar brand -->
       <a class="navbar-brand mt-2 mt-lg-0" href="{{route('homepage.products')}}">
-      <h3 >{{config('app.name')}}</h3>
+      <h4 style="color:blue">{{config('app.name')}}</h4>
       </a>
 
 
@@ -70,7 +61,7 @@
       <ul class="dropdown-menu">
       @foreach($categories as $category)
       <li>
-      <a class="dropdown-item" href="{{route('homepage.products',$category->id)}}">{{$category->name}}</a>
+      <a class="dropdown-item" href="{{route('homepage.category', $category->id)}}">{{$category->name}}</a>
       </li>
       @endforeach
       </ul>
@@ -82,7 +73,12 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="#">{{__('About Us')}}</a>
+          <a class="nav-link" href="{{route('homepage.about')}}">{{__('About Us')}}</a>
+        </li>
+
+        
+        <li class="nav-item">
+          <a class="nav-link" href="{{route('homepage.create')}}">{{__('Contact Us')}}</a>
         </li>
 
       </ul>
@@ -95,26 +91,63 @@
 
 
     <!-- Right elements -->
+    
+        <!-- start localization -->
 
     <div  class="dropdown">
-      <!-- Icon -->
-        <a class="text-reset me-3 dropdown-toggle hidden-arrow"
-           href="{{route('homepage.cart')}}"         
-           id="navbarDropdownMenuLink"
-           role="button"
-           data-mdb-toggle="dropdown"
-           aria-expanded="false">
-      <svg  xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-       <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-       </svg>
-       <span style="margin-left:-20px" class=" badge rounded-pill badge-notification bg-danger">{{$num}}</span>
+      <ul>
 
-       </a>
-       </div>
+       <li class="nav-item dropdown" style="color:blue">
+        <a  class="text-reset me-3 dropdown-toggle" data-bs-toggle="dropdown" id="navbarDropdownMenuAvatar" role="button" data-mdb-toggle="dropdown" aria-expanded="false" >
+          {{ Config::get('languages')[App::getLocale()]}}
+        </a>
+        <ul class="dropdown-menu dropleft">
+          @foreach (Config::get('languages') as $lang => $language)
+          @if ($lang != App::getLocale())
+          <li>
+          <a class="dropdown-item" href="{{route('lang.switch', $lang) }}"> {{$language}}</a>
+          </li>
+          @endif
+          @endforeach
+        </ul>
+       </li>
+
+      </ul>
+    </div>
+
+             <!-- end localization -->
 
 
       <!-- Notifications -->
-      <div class="dropdown">
+     <x-Notifications/>
+      <!-- end Notifications -->
+   
+            <!-- cart -->
+
+     
+    <div  class="dropdown">
+      <ul>
+      <li class="nav-item dropdown" style="color:blue">
+
+      <a class="nav-link dropdown-toggle"
+         href="{{route('homepage.cart')}}"         
+          aria-expanded="false" style="color:blue">
+         <svg  xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+         <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+         </svg>
+         <span style="margin-left:-20px" class=" badge rounded-pill badge-notification bg-danger">{{$num}}</span>
+     </a>
+
+     <ul class="dropdown-menu dropleft">
+        
+        </ul>
+       </li>
+     </ul>
+    </div>
+ 
+                 <!-- end cart -->
+
+      <!--<div class="dropdown">
         <a
           class="text-reset me-3 dropdown-toggle hidden-arrow"
           href="#"
@@ -143,20 +176,23 @@
             <a class="dropdown-item" href="#">Something else here</a>
           </li>
         </ul>
-      </div>
+      </div>-->
 
 
       <!-- Avatar -->
+
       <div class="dropdown">
-       <li class="nav-item dropdown">
+      <ul>
+      <li class="nav-item dropdown">
+
        <a
-       class="text-reset me-3 dropdown-toggle hidden-arrow"
+       class="text-reset me-3 dropdown-toggle"
           href="{{route('profile.show')}}"  
           data-bs-toggle="dropdown"    
           id="navbarDropdownMenuAvatar"
           role="button"
           data-mdb-toggle="dropdown"
-          aria-expanded="false"
+          aria-expanded="false" 
         >
           <img
             src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
@@ -166,23 +202,25 @@
             loading="lazy"
           />
         </a>
+     
       
-      <ul class="dropdown-menu">
+      <ul class="dropdown-menu dropleft">
           <li>
-            <a class="dropdown-item" href="#">My profile</a>
+            <a class="dropdown-item" href="{{route('profile.show')}}">{{__('My Profile')}}</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#">Settings</a>
+            <a class="dropdown-item" href="{{route('profile.show')}}">{{__('Sittings')}}</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#">Logout</a>
+            <a class="dropdown-item" href="{{route('logout')}}">{{__('Logout')}}</a>
           </li>
 
       </ul>
-       </li>
-      </div>
 
-    </div>
+       </li>
+       </ul>
+     </div>
+     
     <!-- Right elements -->
   </div>
   <!-- Container wrapper -->
@@ -197,6 +235,107 @@
 <!-- Moyasar Scripts -->
 <script src="https://polyfill.io/v3/polyfill.min.js?features=fetch"></script>
 <script src="https://cdn.moyasar.com/mpf/1.5.4/moyasar.js"></script>
+
+
+
+<footer  id="ShopifyMainFooter" style="background-color:black ;margin-top:60px" >
+  <h2 class="visuallyhidden">More resources</h2>
+  <div class="footer-top">
+  <div class="grid">
+    <div class="grid__item">
+        <nav class="footer-nav">
+          <ul class="footer-nav__list" role="list">
+              <li class="footer-nav__list-item">
+                <a href="{{route('homepage.products')}}">{{__('Products')}}</a>
+              </li>
+              <li class="footer-nav__list-item">
+                <a href="{{route('homepage.about')}}">{{__('About Us')}}</a>
+              </li>
+              <li class="footer-nav__list-item">
+                <a  href="{{route('homepage.create')}}">{{__('Contact Us')}}</a>
+              </li>
+            
+          </ul>
+        </nav>
+</div>
+    
+        <div class="grid__item grid__item--mobile-up-half grid__item--tablet-up-3">
+      <h3 class="footer-subhead heading--5 ">Online store</h3>
+      <div class="gutter-bottom--mobile footer__3-column-list">
+        <ul role="list">
+            <li>
+              <a class="footer-link" href="">Sell online</a>
+            </li>
+            <li>
+              <a class="footer-link" href="">Features</a>
+            </li>
+            <li>
+              <a class="footer-link" href="">Examples</a>
+            </li>
+            <li>
+              <a class="footer-link" href="">Website editor</a>
+            </li>
+            <li>
+              <a class="footer-link" href="">Online retail</a>
+            </li>
+           
+        </ul>
+</div></div>    <div class="grid__item grid__item--mobile-up-half grid__item--tablet-up-1">
+      <h3 class="footer-subhead heading--5 ">Point of sale</h3>
+      <div class="gutter-bottom--mobile footer__-column-list">
+        <ul role="list">
+            <li>
+              <a class="footer-link" href="">Point of sale</a>
+            </li>
+            <li>
+              <a class="footer-link" href="">Features</a>
+            </li>
+            <li>
+              <a class="footer-link" href="">Hardware</a>
+            </li>
+        </ul>
+</div></div>    <div class="grid__item grid__item--mobile-up-half grid__item--tablet-up-1">
+      <h3 class="footer-subhead heading--5 ">Support</h3>
+      <div class="gutter-bottom--mobile footer__-column-list">
+        <ul role="list">
+            <li>
+              <a class="footer-link" href="">24/7 support</a>
+            </li>
+            <li>
+              <a class="footer-link" href="">Shopify Help Center</a>
+            </li>
+            <li>
+              <a class="footer-link" href="">Shopify Community</a>
+            </li>
+           
+        </ul>
+        </div>
+     </div> 
+   <div class="grid__item grid__item--mobile-up-half grid__item--tablet-up-1">
+      <h3 class="footer-subhead heading--5 ">Shopify</h3>
+      <div class="gutter-bottom--mobile footer__-column-list">
+        <ul role="list">
+            <li>
+              <a class="footer-link" href="/contact">Contact</a>
+            </li>
+            <li>
+              <a class="footer-link" href="">Partner program</a>
+            </li>
+           
+        </ul>
+</div></div>
+    
+
+</div></div>
+
+</footer>
+
+
+  
+<script src="https://cdn.shopify.com/shopifycloud/brochure/bundles/latest/runtime-fe8e668df62dc1cd1ad3d7b94ff800d255685fc38844115180cf2233a888f1db.js"></script>
+<script src="https://cdn.shopify.com/shopifycloud/brochure/bundles/latest/vendor-bcb652bef5527e10d0022d3e2d2244de6e9c1e78e387ee7c52c94ec09887c24d.js"></script>
+<script src="https://cdn.shopify.com/shopifycloud/brochure/bundles/latest/manifests/about-2aee07e099478091856b3e7cbc2f2e11ccba4d227c40942ea344010d5089eb0b.js"></script>  
+<!--<script src="{{ asset('/css/js/main.js') }}"></script>
 
 </body>
 </html>

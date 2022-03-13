@@ -15,9 +15,11 @@
      <option value="{{$category->id}}" @if($category->id == $request['category'] ?? '') selected @endif>{{$category->name}}</option>
      @endforeach
    </select>
-    <button type="submit" class="btn btn-primary form-control mb-5 m-2">find</button>
+    <button type="submit" class="btn btn-success form-control mb-5 m-2">find</button>
   </form>
 </div>
+<a href="{{route('products.create')}}" class="btn btn-success show create mb-3">Create</a>
+
 
     <table class="table table-bordered  text-center">
     <tr>
@@ -30,6 +32,7 @@
         <th>Price</th>
         <th>Quantity</th>
         <th>User</th>
+
 
 
         <th  width="200px">Action</th>
@@ -45,6 +48,7 @@
         <td>{{$product->price}}</td>
         <td>{{$product->quantity}}</td>
         <td>{{$product->user->name}}</td>
+
         
 
         <td>
@@ -63,6 +67,5 @@
       @endforelse
 
     </table>
-    <a href="{{route('products.create')}}" class="btn show create mb-3">Create</a>
 
     @endsection

@@ -2,7 +2,7 @@
 @section('content')
 
 @can('categories.create')<!--== Gate::allows-->
-<a href="{{route('categories.create')}}" class="btn show create mb-3">Create</a>
+<a href="{{route('categories.create')}}" class="btn btn-success create mb-3">Create</a>
 @endcan
 <x-alerts/>
 
@@ -10,7 +10,6 @@
 
     <table class="table table-bordered  text-center">
     <tr>
-        <th>#</th>
         <th>ID</th>
         <th>Name</th>
         <th>Parent</th>
@@ -22,8 +21,7 @@
     </tr>
     @foreach ($categories as $category)
     <tr>
-        <td>{{$loop->index}}</td>
-        <td>{{$category->id}}</td>
+        <td>{{$loop->iteration}}</td>
         <td><a href="{{ route('categories.show',$category->id) }}">{{$category->name}}</td>
         <td>{{$category->parent->name}}</td>
         <td>{{$category->products}}</td>

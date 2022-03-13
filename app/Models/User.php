@@ -55,6 +55,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Role::class);
     }
     
+    public function ratings(){
+        return $this->morphMany(Rating::class,'rateable');
+    }
+
+    
+    public function contacts(){
+        return $this->hasMany(Contact::class,'user_id','id');
+    }
+
+
+    
     
 
 

@@ -17,21 +17,14 @@ class Local
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next)
     {
-        /*if($request->has('lang')){
-        $local =$request->input('lang');
-        if($local != session('lang')){
-            session()->put('lang',$local);
+        if (Session()->has('applocale') AND array_key_exists(Session()->get('applocale'), config('languages'))) {
+            App::setLocale(Session()->get('applocale'));
         }
-       }
-        App::setlocale(session('lang','en'));*/
-
-        $local =$request->route('lang');
-        URL::defaults([
-            'lang'=>$local
-        ]);
-        Route::current()->forgetParameter('lang');
+        else { // This is optional as Laravel will automatically set the fallback language if there is none specified
+            App::setLocale(config('app.fallback_locale'));
+        }
         return $next($request);
     }
 }

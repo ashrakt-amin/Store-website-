@@ -1,15 +1,42 @@
 @extends('homepage.header')
 @section('content')
 
-<div class="body category"  data-currency-code="USD">
 
-<!--<div class="image_product"
-     style="background-image:url(https://images.unsplash.com/photo-1558769132-cb1aea458c5e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80);
-            height:50vh;width:auto;
-            background-repeat: no-repeat">
-            <div>-->
-     
-    <div class="container">
+
+
+<div >
+
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+
+  <div class="carousel-inner" style="height:300px">
+    <div class="carousel-item active">
+      <img   src="{{ asset('images/image1.jpg') }}" class="d-block w-100 h-25" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="{{ asset('images/back2.jpg') }}"  class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="{{ asset('images/back3.jpg') }}" class="d-block w-100" alt="...">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div></div>
+
+
+<div class="body category "  data-currency-code="USD">
+    <div class="container d-flex justify-content-center">
          
     
   <form action={{route('homepage.products')}} class="form-inline" method="GET">
@@ -18,21 +45,6 @@
   </form>
 </div>
 </div>
-
-<div class="cat_page">
-    <div class="cate_banner">
-        <div class="content">
-            <div class="inner">
-                <h2 class="page-heading"></h2>
-                <div class="tagline"></div>
-                <!-- snippet location categories -->
-            </div>
-        </div>
-    </div>
-    </div>
-    </div>
-
-
 
     <div class="container">
     @if(session()->has('status'))

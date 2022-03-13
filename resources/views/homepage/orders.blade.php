@@ -11,18 +11,16 @@
     <tr>
         <th>Order</th>
         <th>Total</th>
-        <th>Status</th>
         <th></th>
 
     </tr>
    @forelse($orders as $order)
     <tr>
-        <td>{{$loop->index}}</td>
+        <td>{{$loop->iteration}}</td>
         <td>{{$order->total}}</td>
-        <td>{{$order->status}}</td>
         <td>
         <button  style="background-color:#F76E11 ;margin:0px 10px;width:120px" class="btn delete">
-        <a class="btn edit" href="{{ route('homepage.moyasar',$order->id) }}">Payment</a></button>
+        <a  href="{{ route('homepage.moyasar',$order->id) }}">Payment</a></button>
         </td>
     </tr>
 
@@ -32,7 +30,7 @@
     </tr>
     @endforelse
    </table>
-
+</div>
 
 
 @endsection

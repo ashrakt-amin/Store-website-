@@ -27,7 +27,7 @@
     </tr>
     @endforelse
    </table>
-   @forelse($carts as $cart)
+
       <div class="row d-flex justify-content-center" >
        <button type="submit"style="background-color:#F76E11 ;margin:10px ;width:100px" class="btn delete">Edit</button>
     </form>
@@ -39,10 +39,7 @@
     <button type="submit" style="background-color:#F76E11 ;margin:10px;width:100px" class="btn delete ">Delete</button>
    </form>
       </div>
-      @empty
-
-        @endforelse
-
+     
 </div>   <!--end div 2-->
    
   <div class="col-md-3 bord " style="margin-left:5%;margin-top:3%"> <!--div 3-->

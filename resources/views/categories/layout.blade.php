@@ -34,7 +34,10 @@
 <nav class="nav flex-column">
       <button> <a href="{{route('categories.index')}}" class="nav_link active">categories</a></button>
       <button><a href="{{route('products.index')}}" class="nav_link active">Products</a></button>
-      <button><a href="{{route('products.index')}}" class="nav_link active">Orders</a></button>
+      <button><a href="{{route('users.index')}}" class="nav_link active">Users</a></button>
+      <button><a href="{{route('message')}}" class="nav_link active">Messages</a></button>
+      <button><a href="{{route('trash')}}" class="nav_link active">Trash</a></button>
+
       </nav>
 </div>
 

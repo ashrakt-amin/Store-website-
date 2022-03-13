@@ -10,6 +10,7 @@
     <button type="submit" class="btn btn-primary form-control mb-5 m-2">find</button>
   </form>
 </div>
+<a href="{{route('users.create')}}" class="btn btn-success create mb-3">Create</a>
 
 
     <table class="table table-bordered  text-center">
@@ -49,6 +50,5 @@
       @endforelse
 
     </table>
-    <a href="{{route('users.create')}}" class="btn show create mb-3">Create</a>
 
     @endsection

@@ -23,7 +23,7 @@ class UsersController extends Controller
         if($request->query('name')){
            $users-> where('users.name' ,'like', $request->query('name'));
         }
-        return view('users.index',['users'=>$users->paginate(),'request'=>$request]);
+        return view('users.index',['users'=>$users->get(),'request'=>$request]);
     }
 
     /**
@@ -43,7 +43,7 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request )
     {
 
         $request->validate([
@@ -53,7 +53,6 @@ class UsersController extends Controller
             'phone'=>'required',
             'type'=>'in:user,admin,super_admin|required',
             'user_name'=>'nullable',
-
             'gender'=>'in:male,female|required',
             'user_image'=>'nullable',
             'country'=>'nullable',
@@ -83,7 +82,7 @@ class UsersController extends Controller
         ]);
        
 
-        return view('users.index',compact('users','profiles'));
+        return redirect()->route('users.index',compact('users','profiles'))->with('success','user was deleted');
     }
 
     /**
@@ -94,8 +93,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $users =User::findOrFail($id);
-        $users->load('profile');
+        $users =User::with('profile')->findOrFail($id);
         return view('users.show',compact('users'));
     }
 

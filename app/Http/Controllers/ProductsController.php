@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\Contact;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -42,16 +43,11 @@ class ProductsController extends Controller
             $products->where('category_id',"=",$request->query('category'));
         }
        
-
+       //->withTrashed()
         return view('products.index',
         ['products'=>$products->paginate(),'request'=>$request]);
 
-        
-      
-
-
-       
-    }
+        }
 
     /**
      * Show the form for creating a new resource.
@@ -224,11 +220,16 @@ class ProductsController extends Controller
     {
         $product=Product::findOrFail($id);
         $product->delete(); 
-        if($product->image){
+       /* if($product->image){
             Storage::disk('uploads')->delete($product->image);
-        }
+        }*/
         return redirect()->route('products.index')->with('success','product was deleted');
 
-
     }
+
+
+
+  
+
+
 }

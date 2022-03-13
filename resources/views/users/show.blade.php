@@ -16,37 +16,29 @@
         <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
                 <strong>Name : </strong>
-                {{$users->profile->country}}
+                {{$users->name}}
             </div>
         </div>
 
         <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
-                <strong>Description : </strong>
-                {{$users->profile->country}}
+                <strong>Email : </strong>
+                {{$users->email}}
             </div>
         </div>
 
 
         <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
-                <strong>Category : </strong>
-                {{$users->profile->country}}
-
-            </div>
-        </div>
-
-        <div class="col-xs-9 col-sm-9 col-md-9">
-            <div class="form-group">
-                <strong>Image : </strong>
-                {{$users->profile->country}}
+                <strong>User Name : </strong>
+                {{$users->user_name}}
 
             </div>
         </div>
 
         <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
-                <strong>Price : </strong>
+                <strong>Country : </strong>
                 {{$users->profile->country}}
 
             </div>
@@ -54,17 +46,15 @@
 
         <div class="col-xs-9 col-sm-9 col-md-9">
             <div class="form-group">
-                <strong>Quantity : </strong>
-                {{$users->profile->country}}
+                <strong>Gender : </strong>
+                {{$users->profile->gender}}
+
             </div>
         </div>
 
-        <div class="col-xs-9 col-sm-9 col-md-9">
-            <div class="form-group">
-                <strong>User : </strong>
-                {{$users->profile->country}}
-            </div>
-        </div>
+        
+
+       
     </div>
     </div>
 

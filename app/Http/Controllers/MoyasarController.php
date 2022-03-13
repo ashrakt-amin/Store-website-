@@ -38,7 +38,7 @@ class MoyasarController extends Controller
         return $id ;
     }
 
-    public function callback(Order $order){
+    public function callback (Order $order){
        $id = request()->query('id');
        $token =base64_encode(config('services.moyasar.secret') .':' );
        $payment = Http::baseUrl('https://api.moyasar.com/v1')
@@ -47,25 +47,25 @@ class MoyasarController extends Controller
        ->get("payments/{$id}")
        ->json();
        
-       if(isset($payment['type']) && $payment['type'] == 'invalid_request_error'){
-           return redirect()->route('homepage.orders')->with('error',$payment['message']);
-       }
-       if($payment['status'] == 'paid'){
-        $order->status ='paid';
-        $order->save();
-
-        $capture = Http::baseUrl('https://api.moyasar.com/v1')
+     if($payment['status'] == 'paid'){
+        Http::baseUrl('https://api.moyasar.com/v1')
         ->withHeaders(['authorizarion' => "Basic{$token}"]) 
         ->post("payments/{$id}")
         ->json();
            
-           if($capture["status"] == "captured"){
-            $order->status ='paid';
-            $order->save();
-           }
-       }
+        if(isset($payment['type']) && $payment['type'] == 'invalid_request_error'){
+            return redirect()->route('homepage.orders')->with('error',$payment['message']);
+        }
+     
+      
+          /*  $order->status ='paid';
+            $order->save();*/
+          
+
+        }
+
        return redirect()->route('homepage.orders')->with('status','order paid');
 
-    }
- 
+    
+}
 }
